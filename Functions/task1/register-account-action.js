@@ -8,22 +8,53 @@ module.exports = class RegisterAccountAction {
     }
 
     register(account) {
+        this.isNameLengthEnough(account);
+        this.isPasswordLengthEnough(account.password);
+        this.setCreatedDate(account);
+        this.addAddresses(account);
+        this.create(account);
+    }
+
+    isNameLengthEnough(account) {
         if (account.name.length <= 5) {
             throw new WrongAccountNameException(account.name);
         }
-        const password = account.password;
-        if (password.length <= 8) {
-            if (this.passwordChecker.validate(password) !== this.passwordChecker.result.OK) {
-                throw new WrongPasswordException();
-            }
-        }
+    }
 
+    isNotValidPassword(password) {
+        return this.passwordChecker.validate(password) !== this.passwordChecker.result.OK;
+    }
+
+    checkPassword(password) {
+        if (this.isNotValidPassword(password)) {
+            throw new WrongPasswordException();
+        }
+    }
+
+    isPasswordLengthEnough(password) {
+        if (password.length <= 8) {
+            this.checkPassword(password);
+        }
+    }
+
+    setCreatedDate(account) {
         account.setCreatedDate(new Date());
+    }
+
+    setAddresses(account) {
         const addresses = new Set();
         addresses.add(account.getHomeAddress());
         addresses.add(account.getWorkAddress());
         addresses.add(account.getAdditionalAddress());
-        account.setAddresses(addresses);
+
+        return addresses;
+    }
+
+    addAddresses(account) {
+        account.setAddresses(account);
+    }
+
+    create(account) {
         this.accountManager.createNewAccount(account);
     }
 
