@@ -3,11 +3,22 @@ const controller = require('./thirdparty/controller');
 
 module.exports = {
     authenticateUser: function (userName, password) {
-        const user = userAuthenticator.login(userName, password);
-        if (user == null) {
+        this.checkValidUser(userName, password);
+        this.getSuccessLoginResponse(userName)
+    },
+
+    loginUser: function (userName, password) {
+        return userAuthenticator.login(userName, password);
+    },
+
+    checkValidUser: function (userName, password) {
+        if (this.loginUser(userName, password) == null) {
             controller.generateFailLoginResponse();
-        } else {
-            controller.generateSuccessLoginResponse(userName);
+            throw new Error('Failed login');
         }
+    },
+
+    getSuccessLoginResponse: function (userName) {
+        controller.generateSuccessLoginResponse(userName);
     },
 };
