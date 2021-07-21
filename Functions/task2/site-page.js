@@ -19,10 +19,12 @@ module.exports = class SitePage {
     }
 
     getEditablePageUrl(params) {
-        return `${HTTP}${DOMAIN}${EDITABLE}${this.getParamsString(params)}${this.getAttributes()}`;
+        const param = this.getParamsString(params);
+        const attributes = this.getAttributes();
+        return `${HTTP}${DOMAIN}${EDITABLE}${param}${attributes}`;
     }
 
     getAttributes() {
-        return '&siteGrp=' + this.siteGroup + '&userGrp=' + this.userGroup;
+        return `&siteGrp=${this.siteGroup}&userGrp=${this.userGroup}`;
     }
 };

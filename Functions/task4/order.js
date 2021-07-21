@@ -1,7 +1,7 @@
 module.exports = class Order {
     getPriceOfAvailableProducts() {
-        this.updateProducts();
-        return this.getOrderPrice();
+        const products = this.getAvailableProducts();
+        return this.getOrderPrice(products);
     }
 
     setProducts(products) {
@@ -12,23 +12,13 @@ module.exports = class Order {
         return this.products;
     }
 
-    updateProducts() {
-        this.products.filter((product, index) => this.removeProduct(product, index));
+    getAvailableProducts() {
+        return this.products.filter(product => product.isAvailable);
     }
 
-    removeProduct(product, index) {
-        if (this.isProductNotAvailable(product)) {
-            this.products.splice(index, 1);
-        }
-    }
-
-    isProductNotAvailable(product) {
-        return !product.isAvailable;
-    }
-
-    getOrderPrice() {
+    getOrderPrice(products) {
         let orderPrice = 0;
-        for (const product of this.products) {
+        for (const product of products) {
             orderPrice += product.productPrice;
         }
         return orderPrice;

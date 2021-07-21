@@ -3,14 +3,12 @@ const sessionManager = require('./thirdparty/session-manager');
 
 const authenticator = {
     login: function (name, password) {
-        return authenticator.loginUser(this.getUser(name), password);
+        authenticator.loginUser(this.getUser(name), password);
     },
 
     loginUser: function (user, password) {
         this.checkIsValidUser(user, password);
         this.setUser(user);
-
-        return user;
     },
 
     getUser: function (name) {

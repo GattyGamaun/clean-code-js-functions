@@ -1,6 +1,8 @@
 const WrongAccountNameException = require('./thirdparty/wrong-account-name-exception');
 const WrongPasswordException = require('./thirdparty/wrong-password-exception');
 
+const MIN_NAME_LENGTH = 5;
+const MIN_PASSWORD_LENGTH = 8;
 module.exports = class RegisterAccountAction {
     constructor() {
         this.passwordChecker = null;
@@ -16,18 +18,19 @@ module.exports = class RegisterAccountAction {
     }
 
     validateName(account) {
-        const minNameLength = 5;
-        if (account.name.length <= minNameLength) {
+        if (account.name.length <= MIN_NAME_LENGTH) {
             throw new WrongAccountNameException(account.name);
         }
     }
 
-    validatePassword(password) {
-        const minPasswordLength = 8;
-        const isNotValid = password.length <= minPasswordLength
+    isNotValid(password) {
+        return password.length <= MIN_PASSWORD_LENGTH
             || this.passwordChecker.validate(password) !== this.passwordChecker.result.OK;
-        if (isNotValid) {
-            throw throw new WrongPasswordException();
+    }
+
+    validatePassword(password) {
+        if (this.isNotValid(password)) {
+            throw new WrongPasswordException();
         }
     }
 

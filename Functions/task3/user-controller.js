@@ -6,7 +6,7 @@ module.exports = {
         try {
             userAuthenticator.login(userName, password);
             controller.generateSuccessLoginResponse(userName);
-        } catch () {
+        } catch {
             controller.generateFailLoginResponse();
         }
     },
