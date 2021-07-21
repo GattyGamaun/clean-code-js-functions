@@ -8,32 +8,26 @@ module.exports = class RegisterAccountAction {
     }
 
     register(account) {
-        this.isNameLengthEnough(account);
-        this.isPasswordLengthEnough(account.password);
+        this.validateName(account);
+        this.validatePassword(account.password);
         this.setCreatedDate(account);
-        this.addAddresses(account);
+        this.setAllAddresses(account);
         this.create(account);
     }
 
-    isNameLengthEnough(account) {
-        if (account.name.length <= 5) {
+    validateName(account) {
+        const minNameLength = 5;
+        if (account.name.length <= minNameLength) {
             throw new WrongAccountNameException(account.name);
         }
     }
 
-    isNotValidPassword(password) {
-        return this.passwordChecker.validate(password) !== this.passwordChecker.result.OK;
-    }
-
-    checkPassword(password) {
-        if (this.isNotValidPassword(password)) {
-            throw new WrongPasswordException();
-        }
-    }
-
-    isPasswordLengthEnough(password) {
-        if (password.length <= 8) {
-            this.checkPassword(password);
+    validatePassword(password) {
+        const minPasswordLength = 8;
+        const isNotValid = password.length <= minPasswordLength
+            || this.passwordChecker.validate(password) !== this.passwordChecker.result.OK;
+        if (isNotValid) {
+            throw throw new WrongPasswordException();
         }
     }
 
@@ -41,7 +35,7 @@ module.exports = class RegisterAccountAction {
         account.setCreatedDate(new Date());
     }
 
-    setAddresses(account) {
+    getAddressList(account) {
         const addresses = new Set();
         addresses.add(account.getHomeAddress());
         addresses.add(account.getWorkAddress());
@@ -50,8 +44,8 @@ module.exports = class RegisterAccountAction {
         return addresses;
     }
 
-    addAddresses(account) {
-        account.setAddresses(account);
+    setAllAddresses(account) {
+        account.setAddresses(this.getAddressList());
     }
 
     create(account) {

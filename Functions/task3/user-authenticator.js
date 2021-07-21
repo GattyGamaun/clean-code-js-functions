@@ -19,7 +19,7 @@ const authenticator = {
 
     checkIsValidUser: function (user, password) {
         if (this.isNotValidPassword(user, password)) {
-            throw new Error('Password is not valid');
+            throw new InvalidUserException();
         }
     },
 

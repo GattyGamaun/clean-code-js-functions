@@ -1,25 +1,38 @@
 module.exports = {
     changeToMidnight: function (date, up) {
-        const newDate = this.getNewDate(date);
-        this.setCorrectDate(newDate, up);
-        this.setCorrectHours(newDate);
+        const newDate = this.cloneDate(date);
+        this.setMidnightDate(newDate, up);
+        this.setMidnightHours(newDate);
         return newDate;
     },
 
-    getNewDate: function (date) {
+    changeToMidnightUp: function (date) {
+        return this.changeToMidnight(date, true);
+    },
+
+    changeToMidnightDown: function (date) {
+        return this.changeToMidnight(date, false);
+    },
+
+    cloneDate: function (date) {
         return new Date(date.getTime());
     },
 
     correctDay(isUp) {
-        return isUp ? 1 : -1;
+        const day = 1
+        return isUp ? day : -day;
     },
 
-    setCorrectDate(date, isUp) {
+    setMidnightDate(date, isUp) {
         date.setDate(date.getDate() + this.correctDay(isUp));
     },
 
-    setCorrectHours(date) {
-        date.setHours(0, 0, 0, 0);
+    setMidnightHours(date) {
+        const year = 0;
+        const month = 0;
+        const day = 0;
+        const hours = 0;
+        date.setHours(year, month, day, hours);
     }
 
 };

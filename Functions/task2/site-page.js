@@ -8,18 +8,18 @@ module.exports = class SitePage {
         this.userGroup = userGroup;
     }
 
-    makeParamsString(params) {
+    getParamsString(params) {
         let paramsString = '';
 
         for (const [key, value] of params) {
-            paramsString += '&' + key + '=' + value;
+            paramsString += `&${key}=${value}`;
         }
 
         return paramsString;
     }
 
     getEditablePageUrl(params) {
-        return HTTP + DOMAIN + EDITABLE + this.makeParamsString(params) + this.getAttributes();
+        return `${HTTP}${DOMAIN}${EDITABLE}${this.getParamsString(params)}${this.getAttributes()}`;
     }
 
     getAttributes() {

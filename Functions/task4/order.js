@@ -13,9 +13,7 @@ module.exports = class Order {
     }
 
     updateProducts() {
-        this.products.forEach((product, index) => {
-            this.removeProduct(product, index);
-        });
+        this.products.filter((product, index) => this.removeProduct(product, index));
     }
 
     removeProduct(product, index) {
