@@ -11,7 +11,9 @@ module.exports = class SitePage {
     getParamsString(params) {
         let paramsString = '';
 
-        for (const [key, value] of params) {
+        const paramsList = [...params, ...this.getAttributes()];
+
+        for (const [key, value] of paramsList) {
             paramsString += `&${key}=${value}`;
         }
 
@@ -20,11 +22,15 @@ module.exports = class SitePage {
 
     getEditablePageUrl(params) {
         const param = this.getParamsString(params);
-        const attributes = this.getAttributes();
-        return `${HTTP}${DOMAIN}${EDITABLE}${param}${attributes}`;
+
+        return `${HTTP}${DOMAIN}${EDITABLE}${param}`;
     }
 
     getAttributes() {
-        return `&siteGrp=${this.siteGroup}&userGrp=${this.userGroup}`;
+        const map = new Map();
+        map.set('siteGrp', this.siteGroup);
+        map.set('userGrp', this.userGroup);
+
+        return map;
     }
 };

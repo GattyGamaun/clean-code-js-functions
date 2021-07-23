@@ -1,3 +1,8 @@
+const MIDNIGHT_HOURS = 0;
+const MIDNIGHT_MINUTES = 0;
+const MIDNIGHT_SECONDS = 0;
+const MIDNIGHT_MS = 0;
+
 function cloneDate (date) {
     return new Date(date.getTime());
 }
@@ -9,29 +14,20 @@ function changeToMidnight (date, up) {
     return clonedDate;
 }
 
-function correctDay(isUp) {
-    const shift = 1
-    return isUp ? shift : -shift;
-}
-
-function setMidnightDate(date, isUp) {
-    date.setDate(date.getDate() + correctDay(isUp));
+function setMidnightDate(date, dayShift) {
+    date.setDate(date.getDate() + dayShift);
 }
 
 function setMidnightHours(date) {
-    const year = 0;
-    const month = 0;
-    const day = 0;
-    const hours = 0;
-    date.setHours(year, month, day, hours);
+    date.setHours(MIDNIGHT_HOURS, MIDNIGHT_MINUTES, MIDNIGHT_SECONDS, MIDNIGHT_MS);
 }
 
 module.exports = {
     changeToMidnightUp: function (date) {
-        return changeToMidnight(date, true);
+        return changeToMidnight(date, 1);
     },
 
     changeToMidnightDown: function (date) {
-        return changeToMidnight(date, false);
+        return changeToMidnight(date, -1);
     },
 };
